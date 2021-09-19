@@ -74,7 +74,7 @@ export default {
           type: 'success',
           duration: 600
         })
-        window.sessionStorage.setItem('token', data.token)
+        window.sessionStorage.setItem('token', data.data.token)
         this.$router.push('home')
       })
     }
