@@ -14,7 +14,18 @@ import {
   Menu,
   Submenu,
   MenuItemGroup,
-  MenuItem
+  MenuItem,
+  Card,
+  Breadcrumb,
+  BreadcrumbItem,
+  Row,
+  Col,
+  Table,
+  TableColumn,
+  Pagination,
+  Switch,
+  Tooltip,
+  Dialog
 } from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import './assets/css/global.css'
@@ -33,9 +44,21 @@ Vue.use(Menu)
 Vue.use(Submenu)
 Vue.use(MenuItemGroup)
 Vue.use(MenuItem)
+Vue.use(Card)
+Vue.use(Breadcrumb)
+Vue.use(BreadcrumbItem)
+Vue.use(Row)
+Vue.use(Col)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Pagination)
+Vue.use(Switch)
+Vue.use(Tooltip)
+Vue.use(Dialog)
 Vue.prototype.$message = Message
 
 axios.defaults.baseURL = 'http://127.0.0.1:8888/api/private/v1/'
+// 拦截器
 axios.interceptors.request.use(config => {
   config.headers.Authorization = window.sessionStorage.getItem('token')
   return config

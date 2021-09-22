@@ -8,12 +8,17 @@
       <el-button @click="handleLogout">退出</el-button>
     </el-header>
     <el-container>
-      <el-aside width="200px">
+      <el-aside :width="isMenuCollaspe ? '64px' : '200px'">
+        <div class="collapse" @click="handleCollapseMenu">
+          <i class="iconfont icon-caidan"></i>
+        </div>
         <el-menu
           class="menu-item-1"
           unique-opened
-          @open="handleOpen"
-          @close="handleClose"
+          :collapse="isMenuCollaspe"
+          :collapse-transition="false"
+          router
+          :default-active="activeNav"
         >
           <!-- 一级菜单 -->
           <el-submenu
@@ -29,7 +34,8 @@
             <el-menu-item
               v-for="submenu in menu.children"
               :key="submenu.id"
-              :index="submenu.id + ''"
+              :index="'/' + submenu.path"
+              @click="handleSaveNavStatus('/' + submenu.path)"
             >
               <i class="el-icon-menu"></i>
               <span slot="title">{{ submenu.authName }}</span>
@@ -37,7 +43,9 @@
           </el-submenu>
         </el-menu>
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -48,10 +56,13 @@ export default {
     return {
       title: 'XX电商管理系统',
       menuList: [],
-      iconList: []
+      iconList: [],
+      isMenuCollaspe: false,
+      activeNav: ''
     }
   },
   created() {
+    this.activeNav = window.sessionStorage.getItem('activeNav')
     this.getMenu()
   },
   methods: {
@@ -69,11 +80,14 @@ export default {
       console.log(data.data)
       this.menuList = data.data
     },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
+    // 折叠菜单
+    handleCollapseMenu() {
+      this.isMenuCollaspe = !this.isMenuCollaspe
     },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
+    // 保存菜单状态
+    handleSaveNavStatus(path) {
+      window.sessionStorage.setItem('activeNav', path)
+      this.activeNav = path
     }
   }
 }
@@ -82,7 +96,6 @@ export default {
 <style lang="less" scoped>
 .home-container {
   height: 100%;
-  background-color: #e4f5ef;
   .el-header {
     display: flex;
     justify-content: space-between;
@@ -106,8 +119,24 @@ export default {
       }
     }
   }
-  .el-aside {
+  .collapse {
+    display: block;
+    text-align: center;
+    font-size: 20px;
+    line-height: 40px;
+    color: #303133;
+    cursor: pointer;
+    background-color: #e1fbf2;
+  }
+  .el-aside,
+  .el-submenu {
     background-color: #c8ebdf;
+  }
+  /deep/.el-menu {
+    background: none;
+  }
+  .el-main {
+    background-color: #f0f5f4;
   }
 }
 </style>

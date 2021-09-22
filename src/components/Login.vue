@@ -55,6 +55,9 @@ export default {
       }
     }
   },
+  mounted() {
+    window.addEventListener('keydown', this.handleLogin, true)
+  },
   methods: {
     // 重置
     handleReset() {
